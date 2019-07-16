@@ -12,15 +12,14 @@ import java.util.List;
 
 public class FlightBookingTest {
 
-    WebDriver driver = new ChromeDriver();
-
 
     @Test
     public void testThatResultsAppearForAOneWayJourney() {
 
         setDriverPath();
+        WebDriver driver = new ChromeDriver();
         driver.get("https://www.cleartrip.com/");
-        waitFor(2000);
+        waitFor(4000);
         driver.findElement(By.id("OneWay")).click();
 
         driver.findElement(By.id("FromTag")).clear();
@@ -28,16 +27,17 @@ public class FlightBookingTest {
 
         //wait for the auto complete options to appear for the origin
 
-        waitFor(2000);
+        waitFor(4000);
         List<WebElement> originOptions = driver.findElement(By.id("ui-id-1")).findElements(By.tagName("li"));
         originOptions.get(0).click();
 
-        driver.findElement(By.id("toTag")).clear();
-        driver.findElement(By.id("toTag")).sendKeys("Delhi");
+        // Saqib: Element Id changed from toTag to ToTag
+        driver.findElement(By.id("ToTag")).clear();
+        driver.findElement(By.id("ToTag")).sendKeys("Delhi");
 
         //wait for the auto complete options to appear for the destination
 
-        waitFor(2000);
+        waitFor(4000);
         //select the first item from the destination auto complete list
         List<WebElement> destinationOptions = driver.findElement(By.id("ui-id-2")).findElements(By.tagName("li"));
         destinationOptions.get(0).click();
@@ -49,7 +49,7 @@ public class FlightBookingTest {
 
         waitFor(5000);
         //verify that result appears for the provided journey search
-        Assert.assertTrue(isElementPresent(By.className("searchSummary")));
+        Assert.assertTrue(isElementPresent(By.className("searchSummary"), driver));
 
         //close the browser
         driver.quit();
@@ -66,7 +66,7 @@ public class FlightBookingTest {
     }
 
 
-    private boolean isElementPresent(By by) {
+    private boolean isElementPresent(By by, WebDriver driver) {
         try {
             driver.findElement(by);
             return true;
