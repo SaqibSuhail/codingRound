@@ -7,18 +7,21 @@ import org.testng.annotations.Test;
 
 public class SignInTest {
 
-    WebDriver driver = new ChromeDriver();
 
     @Test
     public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
 
         setDriverPath();
+        WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
 
         driver.findElement(By.linkText("Your trips")).click();
         driver.findElement(By.id("SignIn")).click();
+
+        // Saqib: iframe switch added to switch to the modal window where the signInButton is located
+        driver.switchTo().frame("modal_window");
 
         driver.findElement(By.id("signInButton")).click();
 
@@ -40,8 +43,9 @@ public class SignInTest {
             System.setProperty("webdriver.chrome.driver", "chromedriver");
         }
         if (PlatformUtil.isWindows()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", "C:\\Work\\saqib\\codingRound\\chromedriver.exe");
         }
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         if (PlatformUtil.isLinux()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
         }
